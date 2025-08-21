@@ -440,7 +440,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
                 Booking Code Generated! 🎉
               </h3>
               <p className="mb-6 text-[#E8DD95] font-medium">
-                Your appointment has been scheduled! Here's your booking code:
+                Your appointment has been scheduled! Here&apos;s your booking code:
               </p>
               <div className="mb-8 rounded-xl bg-white p-6 text-left text-sm border border-gray-300 shadow-sm">
                 <div className="mb-3">
