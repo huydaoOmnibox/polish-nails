@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@nextui-org/button';
+
 import { supabaseBookingClient } from '@/lib/data/supabaseBookingClient';
 import { Booking } from '@/types';
 
@@ -73,6 +74,7 @@ export function EditBookingModal({ isOpen, onClose, booking, onUpdate }: EditBoo
     }
 
     setErrors(newErrors);
+
     return Object.keys(newErrors).length === 0;
   };
 
@@ -108,46 +110,46 @@ export function EditBookingModal({ isOpen, onClose, booking, onUpdate }: EditBoo
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-        initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
         exit={{ opacity: 0 }}
+        initial={{ opacity: 0 }}
         onClick={handleBackdropClick}
       >
         <motion.div
-          className="relative w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl"
-          initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
+          className="relative w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl"
           exit={{ scale: 0.95, opacity: 0 }}
+          initial={{ scale: 0.95, opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
         >
           {/* Close button */}
           <button
-            onClick={onClose}
-            className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
             aria-label="Close modal"
+            className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
+            onClick={onClose}
           >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
             </svg>
           </button>
 
           <h2 className="mb-6 text-2xl font-bold text-gray-900">Edit Booking #{booking.id}</h2>
           
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Full Name */}
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="fullName">
                 Full Name *
               </label>
               <input
-                type="text"
-                id="fullName"
-                value={formData.fullName || ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('fullName', e.target.value)}
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                   errors.fullName ? 'border-red-500' : 'border-gray-300'
                 }`}
+                id="fullName"
+                type="text"
+                value={formData.fullName || ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('fullName', e.target.value)}
               />
               {errors.fullName && (
                 <p className="mt-1 text-sm text-red-600">{errors.fullName}</p>
@@ -156,17 +158,17 @@ export function EditBookingModal({ isOpen, onClose, booking, onUpdate }: EditBoo
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
                 Email (optional)
               </label>
               <input
-                type="email"
-                id="email"
-                value={formData.email || ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                   errors.email ? 'border-red-500' : 'border-gray-300'
                 }`}
+                id="email"
+                type="email"
+                value={formData.email || ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600">{errors.email}</p>
@@ -175,17 +177,17 @@ export function EditBookingModal({ isOpen, onClose, booking, onUpdate }: EditBoo
 
             {/* Phone */}
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="phone">
                 Phone *
               </label>
               <input
-                type="tel"
-                id="phone"
-                value={formData.phone || ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('phone', e.target.value)}
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                   errors.phone ? 'border-red-500' : 'border-gray-300'
                 }`}
+                id="phone"
+                type="tel"
+                value={formData.phone || ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('phone', e.target.value)}
               />
               {errors.phone && (
                 <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
@@ -195,17 +197,17 @@ export function EditBookingModal({ isOpen, onClose, booking, onUpdate }: EditBoo
             {/* Booking Date and Time */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="bookingDate" className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="bookingDate">
                   Booking Date *
                 </label>
                 <input
-                  type="date"
-                  id="bookingDate"
-                  value={formData.bookingDate || ''}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('bookingDate', e.target.value)}
                   className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.bookingDate ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  id="bookingDate"
+                  type="date"
+                  value={formData.bookingDate || ''}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('bookingDate', e.target.value)}
                 />
                 {errors.bookingDate && (
                   <p className="mt-1 text-sm text-red-600">{errors.bookingDate}</p>
@@ -213,17 +215,17 @@ export function EditBookingModal({ isOpen, onClose, booking, onUpdate }: EditBoo
               </div>
 
               <div>
-                <label htmlFor="bookingTime" className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="bookingTime">
                   Booking Time *
                 </label>
                 <input
-                  type="time"
-                  id="bookingTime"
-                  value={formData.bookingTime || ''}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('bookingTime', e.target.value)}
                   className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.bookingTime ? 'border-red-500' : 'border-gray-300'
                   }`}
+                  id="bookingTime"
+                  type="time"
+                  value={formData.bookingTime || ''}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('bookingTime', e.target.value)}
                 />
                 {errors.bookingTime && (
                   <p className="mt-1 text-sm text-red-600">{errors.bookingTime}</p>
@@ -235,14 +237,14 @@ export function EditBookingModal({ isOpen, onClose, booking, onUpdate }: EditBoo
 
             {/* Status */}
             <div>
-              <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="status">
                 Status *
               </label>
               <select
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 id="status"
                 value={formData.status || ''}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleInputChange('status', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="pending">Pending</option>
                 <option value="confirmed">Confirmed</option>
@@ -253,19 +255,19 @@ export function EditBookingModal({ isOpen, onClose, booking, onUpdate }: EditBoo
 
             {/* Notes */}
             <div>
-              <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="notes">
                 Notes (optional)
               </label>
               <textarea
-                id="notes"
-                value={formData.notes || ''}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleInputChange('notes', e.target.value)}
-                placeholder="Any special requests or additional information..."
-                maxLength={500}
-                rows={3}
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                   errors.notes ? 'border-red-500' : 'border-gray-300'
                 }`}
+                id="notes"
+                maxLength={500}
+                placeholder="Any special requests or additional information..."
+                rows={3}
+                value={formData.notes || ''}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleInputChange('notes', e.target.value)}
               />
               <div className="text-xs text-gray-500 text-right mt-1">
                 {(formData.notes?.length || 0)}/500
@@ -285,19 +287,19 @@ export function EditBookingModal({ isOpen, onClose, booking, onUpdate }: EditBoo
             {/* Submit Button */}
             <div className="flex gap-3 pt-4">
               <Button
+                className="flex-1"
                 type="button"
                 variant="bordered"
                 onClick={onClose}
-                className="flex-1"
               >
                 Cancel
               </Button>
               <Button
-                type="submit"
-                color="primary"
-                isLoading={isSubmitting}
-                disabled={isSubmitting}
                 className="flex-1"
+                color="primary"
+                disabled={isSubmitting}
+                isLoading={isSubmitting}
+                type="submit"
               >
                 {isSubmitting ? 'Updating...' : 'Update Booking'}
               </Button>

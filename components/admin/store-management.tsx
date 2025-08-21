@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@nextui-org/button';
+
 import { StoreSettings, StoreHours } from '@/types';
 import { supabaseStoreClient } from '@/lib/data/supabaseStoreClient';
 
@@ -46,6 +47,7 @@ export default function StoreManagement() {
     const loadStoreSettings = async () => {
       try {
         const config = await supabaseStoreClient.getStoreConfig();
+
         setStoreSettings(config);
       } catch (error) {
         console.error('Failed to load store settings:', error);
@@ -116,16 +118,16 @@ export default function StoreManagement() {
               <>
                 <Button
                   color="primary"
-                  onClick={handleSave}
-                  isLoading={isSaving}
                   disabled={isSaving}
+                  isLoading={isSaving}
+                  onClick={handleSave}
                 >
                   Save Changes
                 </Button>
                 <Button
+                  disabled={isSaving}
                   variant="bordered"
                   onClick={handleCancel}
-                  disabled={isSaving}
                 >
                   Cancel
                 </Button>
@@ -145,11 +147,11 @@ export default function StoreManagement() {
               Store Name
             </label>
             <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              disabled={!isEditing}
               type="text"
               value={storeSettings.storeName}
               onChange={(e) => handleGeneralSettingsChange('storeName', e.target.value)}
-              disabled={!isEditing}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
             />
           </div>
           <div>
@@ -157,11 +159,11 @@ export default function StoreManagement() {
               Phone Number
             </label>
             <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              disabled={!isEditing}
               type="tel"
               value={storeSettings.storePhone}
               onChange={(e) => handleGeneralSettingsChange('storePhone', e.target.value)}
-              disabled={!isEditing}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
             />
           </div>
           <div>
@@ -169,11 +171,11 @@ export default function StoreManagement() {
               Email
             </label>
             <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              disabled={!isEditing}
               type="email"
               value={storeSettings.storeEmail}
               onChange={(e) => handleGeneralSettingsChange('storeEmail', e.target.value)}
-              disabled={!isEditing}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
             />
           </div>
           <div>
@@ -181,11 +183,11 @@ export default function StoreManagement() {
               Address
             </label>
             <input
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              disabled={!isEditing}
               type="text"
               value={storeSettings.storeAddress}
               onChange={(e) => handleGeneralSettingsChange('storeAddress', e.target.value)}
-              disabled={!isEditing}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
             />
           </div>
         </div>
@@ -204,11 +206,11 @@ export default function StoreManagement() {
                 <div className="w-24">
                   <label className="flex items-center space-x-2">
                     <input
-                      type="checkbox"
                       checked={dayHours.isOpen}
-                      onChange={(e) => handleHoursChange(dayKey, 'isOpen', e.target.checked)}
-                      disabled={!isEditing}
                       className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:cursor-not-allowed"
+                      disabled={!isEditing}
+                      type="checkbox"
+                      onChange={(e) => handleHoursChange(dayKey, 'isOpen', e.target.checked)}
                     />
                     <span className="text-sm font-medium text-gray-900">{label}</span>
                   </label>
@@ -219,21 +221,21 @@ export default function StoreManagement() {
                     <div>
                       <label className="block text-xs text-gray-500 mb-1">Open</label>
                       <input
+                        className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                        disabled={!isEditing}
                         type="time"
                         value={dayHours.open}
                         onChange={(e) => handleHoursChange(dayKey, 'open', e.target.value)}
-                        disabled={!isEditing}
-                        className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                       />
                     </div>
                     <div>
                       <label className="block text-xs text-gray-500 mb-1">Close</label>
                       <input
+                        className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                        disabled={!isEditing}
                         type="time"
                         value={dayHours.close}
                         onChange={(e) => handleHoursChange(dayKey, 'close', e.target.value)}
-                        disabled={!isEditing}
-                        className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                       />
                     </div>
                   </>
@@ -259,10 +261,10 @@ export default function StoreManagement() {
               Time Slot Duration (minutes)
             </label>
             <select
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              disabled={!isEditing}
               value={storeSettings.timeSlotDuration}
               onChange={(e) => handleGeneralSettingsChange('timeSlotDuration', parseInt(e.target.value))}
-              disabled={!isEditing}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
             >
               <option value={15}>15 minutes</option>
               <option value={30}>30 minutes</option>
@@ -278,13 +280,13 @@ export default function StoreManagement() {
               Maximum Bookings Per Time Slot
             </label>
             <input
-              type="number"
-              min="1"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              disabled={!isEditing}
               max="10"
+              min="1"
+              type="number"
               value={storeSettings.maxBookingsPerSlot}
               onChange={(e) => handleGeneralSettingsChange('maxBookingsPerSlot', parseInt(e.target.value))}
-              disabled={!isEditing}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
             />
             <p className="text-xs text-gray-500 mt-1">
               Maximum number of bookings allowed per time slot
@@ -295,13 +297,13 @@ export default function StoreManagement() {
               Maximum Advance Booking (days, up to 3 years)
             </label>
             <input
-              type="number"
-              min="1"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              disabled={!isEditing}
               max="1095"
+              min="1"
+              type="number"
               value={storeSettings.maxAdvanceBooking}
               onChange={(e) => handleGeneralSettingsChange('maxAdvanceBooking', parseInt(e.target.value))}
-              disabled={!isEditing}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
             />
             <p className="text-xs text-gray-500 mt-1">
               How far in advance customers can book appointments (max 3 years)
@@ -343,6 +345,7 @@ export default function StoreManagement() {
               {daysOfWeek.map(({ key, label }) => {
                 const dayKey = key as keyof StoreHours;
                 const dayHours = storeSettings.openingHours[dayKey];
+
                 return (
                   <div key={key} className="text-sm">
                     {label}: {dayHours.isOpen ? `${dayHours.open} - ${dayHours.close}` : 'Closed'}

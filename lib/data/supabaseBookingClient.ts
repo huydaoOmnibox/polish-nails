@@ -62,6 +62,7 @@ export const supabaseBookingClient = {
       // Apply search filter
       if (filters?.search) {
         const search = filters.search.toLowerCase();
+
         query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%`);
       }
 

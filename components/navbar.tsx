@@ -18,7 +18,6 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/utils/utils";
 import { fontPlayfairDisplay } from "@/config/fonts";
 import logo from "@/public/logo.webp";
-import { BookingButton } from "@/components/booking";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

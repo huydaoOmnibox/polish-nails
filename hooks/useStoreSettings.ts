@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+
 import { StoreSettings } from '@/types';
 import { supabaseStoreClient } from '@/lib/data/supabaseStoreClient';
 
@@ -31,6 +32,7 @@ export function useStoreSettings() {
       setIsLoading(true);
       try {
         const config = await supabaseStoreClient.getStoreConfig();
+
         setStoreSettings(config);
       } catch (error) {
         console.error('Failed to load store settings:', error);
@@ -67,6 +69,7 @@ export function useStoreSettings() {
       (currentHour === closeHour && currentMinute <= closeMinute)
     ) {
       const time = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+
       slots.push(time);
 
       // Add time slot duration
@@ -97,6 +100,7 @@ export function useStoreSettings() {
     
     for (let i = 0; i <= storeSettings.maxAdvanceBooking; i++) {
       const date = new Date(today);
+
       date.setDate(today.getDate() + i);
       const dateString = date.toISOString().split('T')[0];
       

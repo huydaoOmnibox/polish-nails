@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Button as NextuiButton } from '@nextui-org/button';
+
 import { useBooking } from '@/components/providers/booking/BookingProvider';
 import { BookingFormValues } from '@/types';
 import { cn } from '@/utils/utils';
@@ -33,10 +34,10 @@ export const BookingButton: React.FC<BookingButtonProps> = ({
 
   return (
     <NextuiButton
-      variant={variant}
+      className={cn("cursor-pointer", className)}
       color={color}
       size={size}
-      className={cn("cursor-pointer", className)}
+      variant={variant}
       onClick={handleClick}
     >
       {children || label}

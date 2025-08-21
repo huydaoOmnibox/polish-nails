@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable static optimization
-  output: 'standalone',
-  
   // Image optimization
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -13,7 +10,6 @@ const nextConfig = {
   
   // Experimental features for better performance
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['@nextui-org/theme', 'framer-motion'],
   },
   

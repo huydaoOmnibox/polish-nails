@@ -165,6 +165,7 @@ export const supabaseStoreClient = {
 
       // Count bookings per time slot
       const bookingsPerSlot: { [key: string]: number } = {};
+
       existingBookings?.forEach(booking => {
         if (booking.company === '') { // Only count real bookings, not honeypot
           bookingsPerSlot[booking.booking_time] = (bookingsPerSlot[booking.booking_time] || 0) + 1;
@@ -187,6 +188,7 @@ export const supabaseStoreClient = {
         
         // Check if this time slot has available capacity
         const currentBookings = bookingsPerSlot[timeString] || 0;
+
         if (currentBookings < storeConfig.maxBookingsPerSlot) {
           timeSlots.push(timeString);
         }

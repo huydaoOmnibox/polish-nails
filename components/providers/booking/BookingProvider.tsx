@@ -2,8 +2,10 @@
 
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import BookingModal from './BookingModal';
+
 import { BookingFormValues } from '@/types';
+
+import BookingModal from './BookingModal';
 
 interface BookingContextType {
   isOpen: boolean;
@@ -16,9 +18,11 @@ const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
 export const useBooking = () => {
   const context = useContext(BookingContext);
+
   if (!context) {
     throw new Error('useBooking must be used within a BookingProvider');
   }
+
   return context;
 };
 
@@ -52,9 +56,9 @@ export const BookingProvider: React.FC<BookingProviderProps> = ({ children }) =>
       {children}
       {typeof window !== 'undefined' && createPortal(
         <BookingModal
+          initialValues={initialValues}
           isOpen={isOpen}
           onClose={closeBookingModal}
-          initialValues={initialValues}
         />,
         document.body
       )}

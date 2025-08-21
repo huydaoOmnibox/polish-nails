@@ -1,4 +1,4 @@
-import { Booking, BookingFormValues, BookingSubmissionData, BookingFilters, BookingListResponse } from '@/types';
+import { Booking, BookingSubmissionData, BookingFilters, BookingListResponse } from '@/types';
 
 // Mock data store - TODO: replace with real API
 let bookings: Booking[] = [
@@ -72,6 +72,7 @@ export const bookingClient = {
     };
     
     bookings.push(newBooking);
+
     return newBooking;
   },
 
@@ -83,6 +84,7 @@ export const bookingClient = {
     
     if (filters?.search) {
       const search = filters.search.toLowerCase();
+
       filteredBookings = filteredBookings.filter(booking =>
         booking.fullName.toLowerCase().includes(search) ||
         (booking.email && booking.email.toLowerCase().includes(search))
@@ -112,6 +114,7 @@ export const bookingClient = {
     await new Promise(resolve => setTimeout(resolve, 500));
     
     const booking = bookings.find(b => b.id === id);
+
     if (!booking) {
       throw new Error('Booking not found');
     }
@@ -127,6 +130,7 @@ export const bookingClient = {
     await new Promise(resolve => setTimeout(resolve, 500));
     
     const index = bookings.findIndex(b => b.id === id);
+
     if (index !== -1) {
       bookings.splice(index, 1);
     }

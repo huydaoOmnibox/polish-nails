@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@nextui-org/button';
+
 import { supabaseBookingClient } from '@/lib/data/supabaseBookingClient';
 import { Booking, BookingFilters } from '@/types';
 
@@ -35,6 +36,7 @@ export default function AdminBookingsPage() {
   useEffect(() => {
     // Check if user is authenticated
     const authStatus = localStorage.getItem('adminAuthenticated');
+
     if (authStatus === 'true') {
       setIsAuthenticated(true);
       loadBookings();
@@ -47,6 +49,7 @@ export default function AdminBookingsPage() {
     setIsLoading(true);
     try {
       const response = await supabaseBookingClient.listBookings();
+
       setBookings(response.data);
       setFilteredBookings(response.data);
       setTotalPages(Math.ceil(response.data.length / itemsPerPage));
@@ -69,6 +72,7 @@ export default function AdminBookingsPage() {
       dateTo: '',
       status: undefined,
     };
+
     setFilters(clearedFilters);
     setAppliedFilters(clearedFilters);
     setCurrentPage(1);
@@ -80,6 +84,7 @@ export default function AdminBookingsPage() {
 
     if (appliedFilters.search) {
       const searchLower = appliedFilters.search.toLowerCase();
+
       filtered = filtered.filter(
         (booking) =>
           booking.fullName.toLowerCase().includes(searchLower) ||
@@ -113,6 +118,7 @@ export default function AdminBookingsPage() {
   const getCurrentPageItems = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
+
     return filteredBookings.slice(startIndex, endIndex);
   };
 
@@ -150,8 +156,8 @@ export default function AdminBookingsPage() {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => router.push('/admin')}
                 className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                onClick={() => router.push('/admin')}
               >
                 ← Back to Admin
               </button>
@@ -159,8 +165,8 @@ export default function AdminBookingsPage() {
             </div>
             <Button
               color="primary"
-              onClick={loadBookings}
               isLoading={isLoading}
+              onClick={loadBookings}
             >
               Refresh
             </Button>
@@ -174,62 +180,62 @@ export default function AdminBookingsPage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Filters</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
             <div>
-              <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="search">
                 Search
               </label>
               <input
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 id="search"
-                type="text"
                                     placeholder="Search by name, email, phone, or booking code..."
+                type="text"
                 value={filters.search}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setFilters(prev => ({ ...prev, search: e.target.value }))
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <label htmlFor="dateFrom" className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="dateFrom">
                 Date From
               </label>
               <input
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 id="dateFrom"
                 type="date"
                 value={filters.dateFrom}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setFilters(prev => ({ ...prev, dateFrom: e.target.value }))
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <label htmlFor="dateTo" className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="dateTo">
                 Date To
               </label>
               <input
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 id="dateTo"
                 type="date"
                 value={filters.dateTo}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setFilters(prev => ({ ...prev, dateTo: e.target.value }))
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="status">
                 Status
               </label>
               <select
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 id="status"
                 value={filters.status}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                   setFilters(prev => ({ ...prev, status: e.target.value as "pending" | "confirmed" | "cancelled" | undefined }))
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">All Statuses</option>
                 <option value="pending">Pending</option>
@@ -347,8 +353,8 @@ export default function AdminBookingsPage() {
                           <div className="flex space-x-2">
                             {booking.status === 'pending' && (
                               <Button
-                                size="sm"
                                 color="success"
+                                size="sm"
                                 onClick={() => handleStatusUpdate(booking.id, 'confirmed')}
                               >
                                 Confirm
@@ -357,16 +363,16 @@ export default function AdminBookingsPage() {
                             
                             {booking.status !== 'cancelled' && (
                               <Button
-                                size="sm"
                                 color="warning"
+                                size="sm"
                                 onClick={() => handleStatusUpdate(booking.id, 'cancelled')}
                               >
                                 Cancel
                               </Button>
                             )}
                             <Button
-                              size="sm"
                               color="danger"
+                              size="sm"
                               onClick={() => handleDelete(booking.id)}
                             >
                               Delete
@@ -390,10 +396,10 @@ export default function AdminBookingsPage() {
                     </div>
                     <div className="flex space-x-2">
                       <Button
+                        disabled={currentPage === 1}
                         size="sm"
                         variant="bordered"
                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                        disabled={currentPage === 1}
                       >
                         Previous
                       </Button>
@@ -401,10 +407,10 @@ export default function AdminBookingsPage() {
                         Page {currentPage} of {totalPages}
                       </span>
                       <Button
+                        disabled={currentPage === totalPages}
                         size="sm"
                         variant="bordered"
                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                        disabled={currentPage === totalPages}
                       >
                         Next
                       </Button>
