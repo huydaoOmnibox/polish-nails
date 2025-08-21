@@ -1,0 +1,310 @@
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@nextui-org/button';
+import { supabaseBookingClient } from '@/lib/data/supabaseBookingClient';
+import { Booking } from '@/types';
+
+interface EditBookingModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  booking: Booking | null;
+  onUpdate: () => void;
+}
+
+export function EditBookingModal({ isOpen, onClose, booking, onUpdate }: EditBookingModalProps) {
+  const [formData, setFormData] = useState<Partial<Booking>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (booking) {
+      setFormData({
+        fullName: booking.fullName,
+        email: booking.email,
+        phone: booking.phone,
+        notes: booking.notes,
+        status: booking.status,
+        bookingDate: booking.bookingDate,
+        bookingTime: booking.bookingTime,
+      });
+      setErrors({});
+    }
+  }, [booking]);
+
+  const handleInputChange = (field: keyof Booking, value: string | number) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.fullName?.trim()) {
+      newErrors.fullName = 'Full name is required';
+    }
+
+    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    if (!formData.phone?.trim()) {
+      newErrors.phone = 'Phone number is required';
+    }
+
+
+
+    if (!formData.bookingDate) {
+      newErrors.bookingDate = 'Booking date is required';
+    } else if (new Date(formData.bookingDate) < new Date()) {
+      newErrors.bookingDate = 'Booking date cannot be in the past';
+    }
+
+    if (!formData.bookingTime) {
+      newErrors.bookingTime = 'Booking time is required';
+    }
+
+    if (formData.notes && formData.notes.length > 500) {
+      newErrors.notes = 'Notes cannot exceed 500 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm() || !booking) return;
+
+    setIsSubmitting(true);
+    try {
+      // Update the booking with new data
+      await supabaseBookingClient.updateBookingStatus(booking.id, formData.status as any);
+      // You might want to add more update methods to bookingClient for other fields
+      
+      onUpdate();
+      onClose();
+    } catch (error) {
+      console.error('Failed to update booking:', error);
+      setErrors({ submit: 'Failed to update booking. Please try again.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  if (!isOpen || !booking) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={handleBackdropClick}
+      >
+        <motion.div
+          className="relative w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl"
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.95, opacity: 0 }}
+          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        >
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
+            aria-label="Close modal"
+          >
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          <h2 className="mb-6 text-2xl font-bold text-gray-900">Edit Booking #{booking.id}</h2>
+          
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Full Name */}
+            <div>
+              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+                Full Name *
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                value={formData.fullName || ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('fullName', e.target.value)}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  errors.fullName ? 'border-red-500' : 'border-gray-300'
+                }`}
+              />
+              {errors.fullName && (
+                <p className="mt-1 text-sm text-red-600">{errors.fullName}</p>
+              )}
+            </div>
+
+            {/* Email */}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                Email (optional)
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={formData.email || ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  errors.email ? 'border-red-500' : 'border-gray-300'
+                }`}
+              />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+              )}
+            </div>
+
+            {/* Phone */}
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                Phone *
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                value={formData.phone || ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('phone', e.target.value)}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  errors.phone ? 'border-red-500' : 'border-gray-300'
+                }`}
+              />
+              {errors.phone && (
+                <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+              )}
+            </div>
+
+            {/* Booking Date and Time */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="bookingDate" className="block text-sm font-medium text-gray-700 mb-1">
+                  Booking Date *
+                </label>
+                <input
+                  type="date"
+                  id="bookingDate"
+                  value={formData.bookingDate || ''}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('bookingDate', e.target.value)}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.bookingDate ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.bookingDate && (
+                  <p className="mt-1 text-sm text-red-600">{errors.bookingDate}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="bookingTime" className="block text-sm font-medium text-gray-700 mb-1">
+                  Booking Time *
+                </label>
+                <input
+                  type="time"
+                  id="bookingTime"
+                  value={formData.bookingTime || ''}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('bookingTime', e.target.value)}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.bookingTime ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                />
+                {errors.bookingTime && (
+                  <p className="mt-1 text-sm text-red-600">{errors.bookingTime}</p>
+                )}
+              </div>
+            </div>
+
+
+
+            {/* Status */}
+            <div>
+              <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+                Status *
+              </label>
+              <select
+                id="status"
+                value={formData.status || ''}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleInputChange('status', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="pending">Pending</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="done">Done</option>
+              </select>
+            </div>
+
+            {/* Notes */}
+            <div>
+              <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">
+                Notes (optional)
+              </label>
+              <textarea
+                id="notes"
+                value={formData.notes || ''}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleInputChange('notes', e.target.value)}
+                placeholder="Any special requests or additional information..."
+                maxLength={500}
+                rows={3}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  errors.notes ? 'border-red-500' : 'border-gray-300'
+                }`}
+              />
+              <div className="text-xs text-gray-500 text-right mt-1">
+                {(formData.notes?.length || 0)}/500
+              </div>
+              {errors.notes && (
+                <p className="mt-1 text-sm text-red-600">{errors.notes}</p>
+              )}
+            </div>
+
+            {/* Submit Error */}
+            {errors.submit && (
+              <div className="text-sm text-red-600 bg-red-50 p-3 rounded">
+                {errors.submit}
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <div className="flex gap-3 pt-4">
+              <Button
+                type="button"
+                variant="bordered"
+                onClick={onClose}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                color="primary"
+                isLoading={isSubmitting}
+                disabled={isSubmitting}
+                className="flex-1"
+              >
+                {isSubmitting ? 'Updating...' : 'Update Booking'}
+              </Button>
+            </div>
+          </form>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+} 
