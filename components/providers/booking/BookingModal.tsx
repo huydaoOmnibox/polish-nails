@@ -218,7 +218,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
     <AnimatePresence>
       <motion.div
         animate={{ opacity: 1 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-1 sm:p-2 md:p-4"
         exit={{ opacity: 0 }}
         initial={{ opacity: 0 }}
         onClick={handleBackdropClick}
@@ -226,7 +226,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
         <motion.div
           ref={modalRef}
           animate={{ scale: 1, opacity: 1 }}
-          className="relative w-full max-w-lg rounded-2xl bg-gray-800 p-8 shadow-2xl border border-gray-700"
+          className="relative w-full max-w-[95vw] sm:max-w-md md:max-w-lg lg:max-w-xl rounded-2xl bg-gray-800 p-3 sm:p-4 md:p-6 lg:p-8 shadow-2xl border border-gray-700 max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
           exit={{ scale: 0.95, opacity: 0 }}
           initial={{ scale: 0.95, opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
@@ -234,27 +234,31 @@ const BookingModal: React.FC<BookingModalProps> = ({
           {/* Close button */}
           <button
             aria-label="Close modal"
-            className="absolute right-6 top-6 text-gray-300 hover:text-white hover:bg-gray-700 rounded-full p-1 transition-all duration-200"
+            className="absolute right-2 top-2 sm:right-3 sm:top-3 md:right-4 md:top-4 lg:right-6 lg:top-6 text-gray-300 hover:text-white hover:bg-gray-700 rounded-full p-1.5 sm:p-2 transition-all duration-200 z-10 min-w-[44px] min-h-[44px] flex items-center justify-center"
             onClick={onClose}
           >
-            <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
             </svg>
           </button>
 
           {!isSuccess ? (
             <>
-                              <div className="text-center mb-6">
-                  <div className="mx-auto mb-2 flex items-center justify-center">
-                    <img alt="Logo" className="h-36 w-36 object-contain" src="/logo.webp" />
-                  </div>
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-[#d4af37] via-[#f1c40f] via-[#ffd700] via-[#f1c40f] to-[#d4af37] bg-clip-text text-transparent drop-shadow-lg shadow-[#d4af37]/30">
-                    Book Your Appointment
-                  </h2>
-                  <p className="mt-2 text-[#E8DD95] font-medium">Book now to upgrade your look</p>
+              <div className="text-center mb-3 sm:mb-4 md:mb-6">
+                <div className="mx-auto mb-2 flex items-center justify-center">
+                  <img 
+                    alt="Logo" 
+                    className="h-16 w-16 sm:h-20 sm:w-20 md:h-28 md:w-28 lg:h-36 lg:w-36 object-contain" 
+                    src="/logo.webp" 
+                  />
                 </div>
+                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[#d4af37] via-[#f1c40f] via-[#ffd700] via-[#f1c40f] to-[#d4af37] bg-clip-text text-transparent drop-shadow-lg shadow-[#d4af37]/30 leading-tight">
+                  Book Your Appointment
+                </h2>
+                <p className="mt-2 text-xs sm:text-sm md:text-base text-[#E8DD95] font-medium">Book now to upgrade your look</p>
+              </div>
               
-              <form className="space-y-4" onSubmit={handleSubmit}>
+              <form className="space-y-2.5 sm:space-y-3 md:space-y-4" onSubmit={handleSubmit}>
                 {/* Honeypot field */}
                 <input
                   autoComplete="off"
@@ -266,18 +270,16 @@ const BookingModal: React.FC<BookingModalProps> = ({
                   onChange={(e) => handleInputChange('company', e.target.value)}
                 />
 
-
-
-                {/* Date and Time Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Date and Time Row - Stack on mobile */}
+                <div className="space-y-2.5 sm:space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
                   {/* Booking Date */}
-                  <div className="bg-gray-700 rounded-xl p-4 border border-gray-600 shadow-sm">
-                    <label className="block text-sm font-semibold text-gray-100 mb-2" htmlFor="bookingDate">
+                  <div className="bg-gray-700 rounded-xl p-2.5 sm:p-3 md:p-4 border border-gray-600 shadow-sm">
+                    <label className="block text-xs sm:text-sm font-semibold text-gray-100 mb-1.5 sm:mb-2" htmlFor="bookingDate">
                       Booking Date *
                     </label>
                     <input
                       className={cn(
-                        "w-full px-4 py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300 [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert",
+                        "w-full px-2.5 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300 text-sm sm:text-base [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert min-h-[44px]",
                         errors.bookingDate && "border-red-400 focus:ring-red-500 focus:border-red-400"
                       )}
                       id="bookingDate"
@@ -288,19 +290,19 @@ const BookingModal: React.FC<BookingModalProps> = ({
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('bookingDate', e.target.value)}
                     />
                     {errors.bookingDate && (
-                      <p className="mt-2 text-sm text-red-500 font-medium">{errors.bookingDate}</p>
+                      <p className="mt-1.5 sm:mt-2 text-xs text-red-500 font-medium">{errors.bookingDate}</p>
                     )}
                   </div>
 
                   {/* Booking Time */}
-                  <div className="bg-gray-700 rounded-xl p-4 border border-gray-600 shadow-sm">
-                    <label className="block text-sm font-semibold text-gray-100 mb-2" htmlFor="bookingTime">
+                  <div className="bg-gray-700 rounded-xl p-2.5 sm:p-3 md:p-4 border border-gray-600 shadow-sm">
+                    <label className="block text-xs sm:text-sm font-semibold text-gray-100 mb-1.5 sm:mb-2" htmlFor="bookingTime">
                       Booking Time *
                     </label>
                     {availableTimeSlots.length > 0 ? (
                       <select
                         className={cn(
-                          "w-full px-4 py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300",
+                          "w-full px-2.5 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300 text-sm sm:text-base min-h-[44px]",
                           errors.bookingTime && "border-red-400 focus:ring-red-500 focus:border-red-400"
                         )}
                         id="bookingTime"
@@ -315,24 +317,24 @@ const BookingModal: React.FC<BookingModalProps> = ({
                         ))}
                       </select>
                     ) : (
-                      <div className="w-full px-4 py-3 border border-gray-600 rounded-xl bg-gray-600 text-gray-300 font-medium">
+                      <div className="w-full px-2.5 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 border border-gray-600 rounded-xl bg-gray-600 text-gray-300 font-medium text-sm sm:text-base min-h-[44px] flex items-center">
                         No available time slots for this date
                       </div>
                     )}
                     {errors.bookingTime && (
-                      <p className="mt-2 text-sm text-red-500 font-medium">{errors.bookingTime}</p>
+                      <p className="mt-1.5 sm:mt-2 text-xs text-red-500 font-medium">{errors.bookingTime}</p>
                     )}
                   </div>
                 </div>
 
                 {/* Full Name - Full Row */}
-                <div className="bg-gray-700 rounded-xl p-4 border border-gray-600 shadow-sm">
-                  <label className="block text-sm font-semibold text-gray-100 mb-2" htmlFor="fullName">
+                <div className="bg-gray-700 rounded-xl p-2.5 sm:p-3 md:p-4 border border-gray-600 shadow-sm">
+                  <label className="block text-xs sm:text-sm font-semibold text-gray-100 mb-1.5 sm:mb-2" htmlFor="fullName">
                     Full Name *
                   </label>
                   <input
                     className={cn(
-                      "w-full px-4 py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300",
+                      "w-full px-2.5 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300 text-sm sm:text-base min-h-[44px]",
                       errors.fullName && "border-red-400 focus:border-red-400"
                     )}
                     id="fullName"
@@ -342,20 +344,20 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('fullName', e.target.value)}
                   />
                   {errors.fullName && (
-                    <p className="mt-2 text-sm text-red-500 font-medium">{errors.fullName}</p>
+                    <p className="mt-1.5 sm:mt-2 text-xs text-red-500 font-medium">{errors.fullName}</p>
                   )}
                 </div>
 
-                {/* Phone and Email Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Phone and Email Row - Stack on mobile */}
+                <div className="space-y-2.5 sm:space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
                   {/* Phone */}
-                  <div className="bg-gray-700 rounded-xl p-4 border border-gray-600 shadow-sm">
-                    <label className="block text-sm font-semibold text-gray-100 mb-2" htmlFor="phone">
+                  <div className="bg-gray-700 rounded-xl p-2.5 sm:p-3 md:p-4 border border-gray-600 shadow-sm">
+                    <label className="block text-xs sm:text-sm font-semibold text-gray-100 mb-1.5 sm:mb-2" htmlFor="phone">
                       Phone *
                     </label>
                     <input
                       className={cn(
-                        "w-full px-4 py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300",
+                        "w-full px-2.5 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300 text-sm sm:text-base min-h-[44px]",
                         errors.phone && "border-red-400 focus:border-red-400"
                       )}
                       id="phone"
@@ -365,18 +367,18 @@ const BookingModal: React.FC<BookingModalProps> = ({
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('phone', e.target.value)}
                     />
                     {errors.phone && (
-                      <p className="mt-2 text-sm text-red-500 font-medium">{errors.phone}</p>
+                      <p className="mt-1.5 sm:mt-2 text-xs text-red-500 font-medium">{errors.phone}</p>
                     )}
                   </div>
 
                   {/* Email */}
-                  <div className="bg-gray-700 rounded-xl p-4 border border-gray-600 shadow-sm">
-                    <label className="block text-sm font-semibold text-gray-100 mb-2" htmlFor="email">
+                  <div className="bg-gray-700 rounded-xl p-2.5 sm:p-3 md:p-4 border border-gray-600 shadow-sm">
+                    <label className="block text-xs sm:text-sm font-semibold text-gray-100 mb-1.5 sm:mb-2" htmlFor="email">
                       Email (optional)
                     </label>
                     <input
                       className={cn(
-                        "w-full px-4 py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300",
+                        "w-full px-2.5 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300 text-sm sm:text-base min-h-[44px]",
                         errors.email && "border-red-400 focus:border-red-400"
                       )}
                       id="email"
@@ -386,19 +388,19 @@ const BookingModal: React.FC<BookingModalProps> = ({
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
                     />
                     {errors.email && (
-                      <p className="mt-2 text-sm text-red-500 font-medium">{errors.email}</p>
+                      <p className="mt-1.5 sm:mt-2 text-xs text-red-500 font-medium">{errors.email}</p>
                     )}
                   </div>
                 </div>
 
                 {/* Notes */}
-                <div className="bg-gray-700 rounded-xl p-4 border border-gray-600 shadow-sm">
-                  <label className="block text-sm font-semibold text-gray-100 mb-2" htmlFor="notes">
+                <div className="bg-gray-700 rounded-xl p-2.5 sm:p-3 md:p-4 border border-gray-600 shadow-sm">
+                  <label className="block text-xs sm:text-sm font-semibold text-gray-100 mb-1.5 sm:mb-2" htmlFor="notes">
                     Notes (optional)
                   </label>
                   <textarea
                     className={cn(
-                      "w-full px-4 py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300 resize-none",
+                      "w-full px-2.5 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8DD95] focus:border-[#E8DD95] transition-all duration-200 bg-gray-600 text-white placeholder-gray-300 resize-none text-sm sm:text-base min-h-[44px]",
                       errors.notes && "border-red-400 focus:border-red-400"
                     )}
                     id="notes"
@@ -408,25 +410,25 @@ const BookingModal: React.FC<BookingModalProps> = ({
                     value={formData.notes}
                     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleInputChange('notes', e.target.value)}
                   />
-                  <div className="text-xs text-[#E8DD95] text-right mt-2 font-medium">
+                  <div className="text-xs text-[#E8DD95] text-right mt-1.5 sm:mt-2 font-medium">
                     {formData.notes.length}/500
                   </div>
                   {errors.notes && (
-                    <p className="mt-2 text-sm text-red-500 font-medium">{errors.notes}</p>
+                    <p className="mt-1.5 sm:mt-2 text-xs text-red-500 font-medium">{errors.notes}</p>
                   )}
                 </div>
 
                 {/* Submit Error */}
                 {errors.submit && (
-                  <div className="text-sm text-red-500 bg-red-50 p-4 rounded-xl border border-red-200 font-medium">
+                  <div className="text-xs text-red-500 bg-red-50 p-2.5 sm:p-3 md:p-4 rounded-xl border border-red-200 font-medium">
                     {errors.submit}
                   </div>
                 )}
 
                 {/* Submit Button */}
-                <div className="pt-6">
+                <div className="pt-3 sm:pt-4 md:pt-6">
                   <NextuiButton
-                    className="w-full h-12 bg-gradient-to-r from-[#d4af37] via-[#f1c40f] via-[#ffd700] via-[#f1c40f] to-[#d4af37] text-center text-sm font-bold uppercase leading-4 text-gray-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
+                    className="w-full h-11 sm:h-12 bg-gradient-to-r from-[#d4af37] via-[#f1c40f] via-[#ffd700] via-[#f1c40f] to-[#d4af37] text-center text-sm font-bold uppercase leading-4 text-gray-900 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 min-h-[44px]"
                     disabled={isSubmitting}
                     isLoading={isSubmitting}
                     type="submit"
@@ -439,30 +441,30 @@ const BookingModal: React.FC<BookingModalProps> = ({
           ) : (
             /* Success View */
             <div className="text-center">
-              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-[#d4af37] via-[#f1c40f] via-[#ffd700] via-[#f1c40f] to-[#d4af37] shadow-2xl shadow-[#d4af37]/40">
-                <svg className="h-10 w-10 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="mx-auto mb-3 sm:mb-4 md:mb-6 flex h-14 w-14 sm:h-16 sm:w-16 md:h-20 md:w-20 items-center justify-center rounded-full bg-gradient-to-r from-[#d4af37] via-[#f1c40f] via-[#ffd700] via-[#f1c40f] to-[#d4af37] shadow-2xl shadow-[#d4af37]/40">
+                <svg className="h-7 w-7 sm:h-8 sm:w-8 md:h-10 md:w-10 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
                 </svg>
               </div>
-              <h3 className="mb-3 text-2xl font-bold bg-gradient-to-r from-[#d4af37] via-[#f1c40f] via-[#ffd700] via-[#f1c40f] to-[#d4af37] bg-clip-text text-transparent drop-shadow-lg shadow-[#d4af37]/30">
+              <h3 className="mb-2 sm:mb-3 text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-[#d4af37] via-[#f1c40f] via-[#ffd700] via-[#f1c40f] to-[#d4af37] bg-clip-text text-transparent drop-shadow-lg shadow-[#d4af37]/30 leading-tight">
                 Booking Code Generated! 🎉
               </h3>
-              <p className="mb-6 text-[#E8DD95] font-medium">
+              <p className="mb-3 sm:mb-4 md:mb-6 text-xs sm:text-sm md:text-base text-[#E8DD95] font-medium">
                 Your appointment has been scheduled! Here&apos;s your booking code:
               </p>
-              <div className="mb-8 rounded-xl bg-white p-6 text-left text-sm border border-gray-300 shadow-sm">
-                <div className="mb-3">
+              <div className="mb-4 sm:mb-6 md:mb-8 rounded-xl bg-white p-3 sm:p-4 md:p-6 text-left text-xs sm:text-sm border border-gray-300 shadow-sm">
+                <div className="mb-1.5 sm:mb-2 md:mb-3">
                   <span className="font-semibold text-gray-800">Name:</span> {createdBooking?.fullName}
                 </div>
-                <div className="mb-3">
+                <div className="mb-1.5 sm:mb-2 md:mb-3">
                   <span className="font-semibold text-gray-800">Date:</span> {createdBooking?.bookingDate}
                 </div>
-                <div className="mb-3">
+                <div className="mb-1.5 sm:mb-2 md:mb-3">
                   <span className="font-semibold text-gray-800">Time:</span> {createdBooking?.bookingTime}
                 </div>
 
                 {createdBooking?.email && (
-                  <div className="mb-3">
+                  <div className="mb-1.5 sm:mb-2 md:mb-3">
                     <span className="font-semibold text-gray-800">Email:</span> {createdBooking.email}
                   </div>
                 )}
@@ -471,7 +473,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
                 </div>
               </div>
               <NextuiButton
-                className="w-full h-12 bg-[#E8DD95] hover:bg-[#E8DD95]/90 text-gray-800 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                className="w-full h-11 sm:h-12 bg-[#E8DD95] hover:bg-[#E8DD95]/90 text-gray-800 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 min-h-[44px]"
                 onClick={onClose}
               >
                 Close
